@@ -1,5 +1,5 @@
 # APICloud-Certification-Cases
-[APICloud](https://www.apicloud.com)认证考试往期实例App源码合集，本集合内集成了APICloud的认证考试考前资源和演示Demo的源码，供开发者参考学习。本集合会跟随APICloud的认证考试进行持续更新。
+[APICloud](https://www.apicloud.com)认证考试往期实例App源码合集，本集合内集成了[APICloud](https://www.apicloud.com)的认证考试考前资源和演示Demo的源码，供开发者参考学习。本集合会跟随[APICloud](https://www.apicloud.com)的认证考试进行持续更新。
 
 1. [20161029广州考试题](https://github.com/apicloudcom/APICloud-Certification-Cases/tree/master/ACT_20161029)：
 
