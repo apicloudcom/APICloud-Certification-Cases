@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>云API</title>
+		<link rel="stylesheet" type="text/css" href="../css/api.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/style.css"/>
+		<style>
+			body, html {
+				background-color: #D9D9D9;
+			}
+			.info {
+				height: 90px;
+				border-bottom: 1px solid #D9D9D9;
+				background-color: #FFFFFF;
+			}
+			.head-icon {
+				width: 70px;
+				height: 70px;
+				margin: 10px;
+				border-radius: 70px;
+				background-image: url(../image/picture_default.png);
+				background-position: center center;
+				background-size: 100% 100%;
+				background-repeat: no-repeat;
+			}
+			.info-right {
+				height: 50px;
+				margin: auto 0;
+				margin-right: 10px;
+				background-image: url(../image/ic_arrow_right.png);
+				background-position: right;
+				background-size: 12px 21px;
+				background-repeat: no-repeat;
+			}
+			
+			.name {
+				font-size: 18px;
+			}
+			.name-tips {
+				font-size: 15px;
+				color: #909090;
+			}
+			
+			.functions {
+				margin-top: 15px;
+				border-bottom: 1px solid #D9D9D9;
+				background-color: #FFFFFF;
+			}
+			.column {
+				height: 90px;
+				border-left: 1px solid #D9D9D9;
+				border-top: 1px solid #D9D9D9;
+				text-align: center;
+			}
+			.column img {
+				width: 30px;
+				height: 30px;
+			}
+			.text {
+				height: 30px;
+				margin-top: 10px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="info flex-wrap">
+			<div class="head-icon" id="head_icon"></div>
+			<div class="info-right flex-con flex-wrap flex-vertical">
+				<div class="name flex-con" id="info-name">
+					昵称
+				</div>
+				<div class="name-tips flex-con">
+					点击查看个人主页
+				</div>
+			</div>
+		</div>
+		<div class="functions border-bottom">
+			<div class="row flex-wrap">
+				<div class="column flex-con">
+					<img src="../image/space_center_my_info_bg.png"/>
+					<div class="text">
+						我的资料
+					</div>
+				</div>
+				<div class="column flex-con">
+					<img src="../image/space_center_integrity_level_bg.png"/>
+					<div class="text">
+						诚信等级
+					</div>
+				</div>
+				<div class="column flex-con">
+					<img src="../image/space_center_album_bg.png"/>
+					<div class="text">
+						我的相册
+					</div>
+				</div>
+			</div>
+			<div class="row flex-wrap">
+				<div class="column flex-con">
+					<img src="../image/space_center_dynamic_bg.png"/>
+					<div class="text">
+						我的动态
+					</div>
+				</div>
+				<div class="column flex-con">
+					<img src="../image/space_center_condition_bg.png"/>
+					<div class="text">
+						征友条件
+					</div>
+				</div>
+				<div class="column flex-con">
+					<img src="../image/space_center_look_me_bg.png"/>
+					<div class="text">
+						谁看过我
+					</div>
+				</div>
+			</div>
+			<div class="row flex-wrap">
+				<div class="column flex-con">
+					<img src="../image/space_center_voice_bg.png"/>
+					<div class="text">
+						音缘
+					</div>
+				</div>
+				<div class="column flex-con">
+					<img src="../image/space_center_luck_bg.png"/>
+					<div class="text">
+						缘分问答
+					</div>
+				</div>
+				<div class="column flex-con">
+					<img src="../image/space_center_setting_bg.png"/>
+					<div class="text">
+						设置
+					</div>
+				</div>
+			</div>
+			<div class="row flex-wrap">
+				<div class="column flex-con">
+					<img src="../image/space_center_notification_bg.png"/>
+					<div class="text">
+						通知广播
+					</div>
+				</div>
+				<div class="column flex-con">
+					<img src="../image/space_center_vip_bg.png"/>
+					<div class="text">
+						会员中心
+					</div>
+				</div>
+				<div class="column flex-con">
+					<img src="../image/space_center_online_service_bg.png"/>
+					<div class="text">
+						在线客服
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="../script/api.js"></script>
+	<script type="text/javascript" src="../script/sha1.js"></script>
+	<script>
+		apiready = function() {
+			setItemHeight();
+			fnUpdateUserAtavar();
+		}
+		function setItemHeight() {
+			var items = document.getElementsByClassName("column");
+			for (var i = 0; i < items.length; i++) {
+				items[i].style.height = (api.frameWidth / 3) + "px";
+				items[i].getElementsByTagName("img")[0].style.marginTop = 30 + "px";
+			}
+		}
+
+		function fnUpdateUserAtavar() {
+			var user_id = "58cf860515f28f7915197a6b";
+			if (user_id != null && user_id != "") {
+				var now = Date.now();
+				var appKey = SHA1("A6933493896767" + "UZ" + "234547A6-94F5-80F4-E597-A6F8BEC79719" + "UZ" + now) + "." + now;
+				api.ajax({
+					url : 'https://d.apicloud.com/mcm/api/users/' + user_id,
+					method : 'get',
+					headers : {
+						"X-APICloud-AppId" : "A6933493896767",
+						"X-APICloud-AppKey" : appKey
+					}
+				}, function(ret, err) {
+					if (ret) {
+						var info_name = $api.byId("info-name");
+						$api.html(info_name, ret.nick);
+						api.imageCache({
+							url : ret.img_url
+						}, function(ret, err) {
+							if (ret) {
+								var head_icon = $api.byId("head_icon");
+								head_icon.style.backgroundImage = 'url(' + ret.url + ')';
+							} else {
+								alert(JSON.stringify(err));
+							}
+						});
+					} else {
+						alert(JSON.stringify(err));
+					}
+				});
+			}
+		}
+	</script>
+</html>

@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>主界面</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <style>
+    body,
+    html {
+        height: 100%;
+        display: flex;
+        display: -webkit-flex;
+        display: -webkit-box;
+        flex-flow: column;
+        -webkit-flex-flow: column;
+        -webkit-box-orient: vertical;
+        background-color: #ffffff;
+    }
+    
+    #header {
+        background-color: #fc0;
+    }
+    
+    .content {
+        flex: 1;
+        -webkit-flex: 1;
+        -webkit-box-flex: 1;
+        background-color: #ffffff;
+    }
+    
+    footer {
+        height: 50px;
+        border-top: 1px solid #d2d2d0;
+        display: flex;
+        display: -webkit-flex;
+        display: -webkit-box;
+        flex-flow: row;
+        -webkit-flex-flow: row;
+        -webkit-box-orient: horizontal;
+        background-color: #fff;
+        position: relative;
+        box-sizing: border-box;
+    }
+    
+    footer .menu {
+        flex: 1;
+        -webkit-flex: 1;
+        -webkit-box-flex: 1;
+        text-align: center;
+        color: #aeaeae;
+        font-size: 12px;
+        line-height: 12px;
+    }
+    
+    .menu img {
+        margin-top: 6px;
+        width: 22px;
+    }
+    
+    .menu.on {
+        color: #272727;
+    }
+    
+    .menu .normal {
+        display: block;
+    }
+    
+    .menu .active {
+        display: none;
+    }
+    
+    .menu.on .active {
+        display: block;
+    }
+    
+    .menu.on .normal {
+        display: none;
+    }
+    
+    header {
+        background-color: #000000;
+    }
+    
+    .orderHead {
+        background-color: #ffffff;
+        color: #363636;
+        line-height: 45px;
+        border-bottom: 1px solid #e4e4e4;
+        display: none;
+    }
+    
+    .orderHead.on {
+        display: block;
+    }
+    
+    .orderTitle>div {
+        width: 50%;
+        float: left;
+        text-align: center;
+    }
+    
+    ._or {
+        font-size: 17px;
+        font-weight: 700;
+        margin-left: 16px;
+    }
+    
+    .titles {
+        font-weight: 800;
+        color: #aeaeae;
+    }
+    
+    .titles.active {
+        /*font-weight: 800;*/
+    }
+    
+    .titles.active span {
+        /*font-weight: 800;*/
+        padding: 0 20px;
+        color: #000000;
+        border-bottom: 4px solid #ffd05e;
+    }
+    </style>
+</head>
+
+<body>
+    <div id="header">
+        <div class="orderHead" id="orderHead">
+            <div class="_or">订单</div>
+            <div class="orderTitle clearfix">
+                <div class="titles active" tapmode="active" onclick="changeGroup(0);"><span>全部订单</span></div>
+                <div class="titles" tapmode="active" onclick="changeGroup(1);"><span>待评价</span></div>
+            </div>
+        </div>
+    </div>
+    <div class="content"></div>
+    <footer id="footer">
+        <div class="menu on" tapmode="on" onclick="fnChange(0);">
+            <div class="active"><img src="../image/main/a6q.png"></div>
+            <div class="normal"><img src="../image/main/a6p.png"></div>
+            <div>首页</div>
+        </div>
+        <div class="menu" tapmode="on" onclick="fnChange(1);">
+            <div class="active"><img src="../image/main/a6o.png"></div>
+            <div class="normal"><img src="../image/main/a6n.png"></div>
+            <div>订单</div>
+        </div>
+        <div class="menu" tapmode="on" onclick="fnChange(2);">
+            <div class="normal"><img src="../image/main/a6r.png"></div>
+            <div class="active"><img src="../image/main/a6s.png"></div>
+            <div>我的</div>
+        </div>
+    </footer>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript">
+apiready = function() {
+    fnInit();
+
+    fnChange(0);
+
+};
+
+var footer, menus, header, headerHeight, orderHead;
+
+function fnInit() {
+    header = $api.byId('header');
+    orderHead = $api.byId('orderHead');
+    orderTitles = $api.domAll(orderHead, '.titles');
+    // $api.fixStatusBar(header);
+    if (api.systemType == 'ios') {
+        $api.fixIos7Bar(header);
+    }
+    // $api.fixIos7Bar(header);
+    // $api.fixStatusBar(header);    
+    api.setStatusBarStyle({
+        style: 'light'
+    });
+    // $api.fixIos7Bar(header);
+    footer = $api.byId('footer');
+    menus = $api.domAll(footer, '.menu');
+    headerHeight = $api.offset(header).h;
+    // alert(headerHeight)
+    footerHeight = $api.offset(footer).h;
+}
+
+function fnChange(index) {
+    for (var i = 0; i < menus.length; i++) {
+        if (i == index) {
+            fnOpenFrame(index, true);
+        } else {
+            fnOpenFrame(i, false);
+        }
+
+    }
+    fnChangeMenusStyle(index);
+}
+
+function fnChangeMenusStyle(index) {
+
+    for (var i = 0; i < menus.length; i++) {
+        if (index == i) {
+            $api.addCls(menus[index], 'on');
+        } else {
+            $api.removeCls(menus[i], 'on');
+        }
+    }
+
+}
+var frameNames = ['home_frame', 'order_framegroup', 'my_frame'];
+// var homeIsOpen=false;
+function fnOpenFrame(index, isOpen) {
+
+    if (isOpen) {
+        if (index == 0) {
+            $api.removeCls(orderHead, 'on');
+            headerHeight = $api.offset(header).h;
+            api.openFrame({
+                name: 'home_frame',
+                url: './home_frame.html',
+                rect: {
+                    x: 0,
+                    y: 0,
+                    w: api.winWidth,
+                    h: api.winHeight - footerHeight
+                },
+                bounces: true,
+                bgColor: 'rgba(0,0,0,0)',
+                vScrollBarEnabled: false,
+                hScrollBarEnabled: false
+            });
+            homeIsOpen = true;
+        } else if (index == 2) {
+               
+            header.style.background = "#fed557";
+            $api.removeCls(orderHead, 'on');
+            headerHeight = $api.offset(header).h;
+            var bounces = false;
+            if (api.systemType == 'ios') {
+                bounces = true;
+                bgColor = '#fed557';
+                 api.setStatusBarStyle({
+                    style: 'dark'
+                });
+            } else {
+                bgColor = 'rgba(0,0,0,0)';
+            }
+            api.openFrame({
+                name: 'my_frame',
+                url: './my_frame.html',
+                rect: {
+                    x: 0,
+                    y: headerHeight,
+                    w: api.winWidth,
+                    h: api.winHeight - footerHeight - headerHeight
+                },
+                bounces: false,
+                bgColor: bgColor,
+                vScrollBarEnabled: false,
+                hScrollBarEnabled: false
+            });
+        } else {
+            header.style.background = "#ffffff";
+
+            fnOpenFramegroup();
+        }
+    } else {
+        console.log(frameNames[index])
+        if (index == 1) {
+            api.setFrameGroupAttr({
+                name: 'order_framegroup',
+                hidden: true
+            });
+        } else {
+            api.setFrameAttr({
+                name: frameNames[index],
+                hidden: true
+            });
+        }
+
+    }
+
+}
+
+function fnOpenFramegroup() {
+    if (api.systemType=='ios'){
+                 api.setStatusBarStyle({
+                    style: 'dark'
+                });
+            }
+    $api.addCls(orderHead, 'on');
+    headerHeight = $api.offset(header).h;
+    api.openFrameGroup({
+        name: 'order_framegroup',
+        rect: {
+            x: 0,
+            y: headerHeight,
+            w: 'auto',
+            h: api.winHeight - footerHeight - headerHeight
+        },
+        scrollEnabled: true,
+        frames: [{
+            name: 'order_frame_0',
+            url: 'order_frame_0.html',
+            vScrollBarEnabled: false,
+            hScrollBarEnabled: false,
+            bounces: false
+        }, {
+            name: 'order_frame_1',
+            url: 'order_frame_1.html',
+            vScrollBarEnabled: false,
+            hScrollBarEnabled: false,
+            bounces: false
+        }]
+    }, function(ret, err) {
+        if (ret) {
+            changeGroup(ret.index, true)
+                // alert(JSON.stringify(ret));
+        } else {
+            // alert(JSON.stringify(err));
+        }
+    });
+}
+
+function changeGroup(index, bull) {
+    for (var i = 0; i < orderTitles.length; i++) {
+        if (index == i) {
+            $api.addCls(orderTitles[index], 'active');
+        } else {
+            $api.removeCls(orderTitles[i], 'active');
+        }
+    }
+    if (bull) {
+        return;
+    } else {
+        api.setFrameGroupIndex({
+            name: 'order_framegroup',
+            index: index,
+            scroll: true
+        });
+    }
+
+}
+</script>
+
+</html>

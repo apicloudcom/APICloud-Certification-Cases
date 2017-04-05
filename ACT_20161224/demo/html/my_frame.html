@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>我的</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <style>
+    body,
+    html {
+        height: 100%;
+        background-color: #efefef;
+    }
+    
+    .info {
+        height: 155px;
+        background-color: #fed557;
+        text-align: center;
+        overflow: hidden;
+    }
+    
+    .icon {
+        margin-top: 23px;
+        text-align: center;
+    }
+    
+    .icon img {
+        width: 73px;
+        height: 73px;
+        border-radius: 50%;
+        border: 3px solid #ffe299;
+        /*border*/
+    }
+    
+    .info .username {
+        line-height: 45px;
+        color: #403114;
+    }
+    
+    .detail {
+        background-color: #ffffff;
+        padding: 13px 0;
+    }
+    
+    .detail>div {
+        width: 33%;
+        text-align: center;
+        float: left;
+        line-height: 23px;
+        font-size: 13px;
+        box-sizing: border-box;
+        border-right: 1px solid #f0f0f0;
+    }
+    
+    .detail>div:last-child {
+        border-right: none;
+    }
+    
+    .detail img {
+        width: 19px;
+        vertical-align: middle;
+    }
+    
+    .detail .count {
+        color: #999999;
+    }
+    
+    .detail .count span {
+        font-size: 18px;
+    }
+    
+    .detail .text {
+        margin-left: 10px;
+    }
+    </style>
+</head>
+<div class="info">
+    <div class="icon"><img src="../image/my/a76.png"  id='icon'></div>
+    <div class="username" id='username'></div>
+</div>
+<div class="detail clearfix">
+    <div>
+        <div class="count"><span id='count'>0</span> 元</div>
+        <div><span><img src="../image/my/xq.png" id=></span><span class="text">余额</span></div>
+    </div>
+    <div>
+        <div class="count"><span id='redPacket'>0</span> 元</div>
+        <div><span><img src="../image/my/ue.png"></span><span class="text">美团红包</span></div>
+    </div>
+    <div>
+        <div class="count"><span id='ticket'>0</span> 元</div>
+        <div><span><img src="../image/my/wk.png"></span><span class="text">商家代金券</span></div>
+    </div>
+</div>
+
+<body>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/SHA1.js"></script>
+<script type="text/javascript" src="../script/APICloud-rest.js"></script>
+<script type="text/javascript" src="../script/doT.min.js"></script>
+<script type="text/javascript">
+apiready = function() {
+    fnInit();
+    getData();
+};
+var username, icon, retPacket, count, ticket;
+
+function fnInit() {
+
+    username = $api.byId('username');
+    icon = $api.byId('icon');
+    redPacket = $api.byId('redPacket');
+    count = $api.byId('count');
+    ticket = $api.byId('ticket');
+}
+
+function getData() {
+    var client = new Resource("A6937689696749", "920F76F9-D407-4256-D7DF-D921580338A7");
+    var My = client.Factory("my");
+    api.showProgress({
+        style: 'default',
+        animationType: 'fade',
+        title: '努力加载中...',
+        text: '请稍等...',
+        modal: false
+    });
+    My.query({
+        "filter": {
+            "where": {},
+            "skip": 0,
+            "limit": 1
+        }
+    }, function(ret, err) {
+    	api.hideProgress();
+        username.innerHTML=ret[0].username;
+      
+        api.imageCache({
+            url: ret[0].icon.url
+        }, function(ret, err){
+            if( ret ){
+                   $api.attr(icon,'src',ret.url);
+            }else{
+                 alert( JSON.stringify( err.msg ) );
+            }
+        });
+        console.log($api.domAll('.icon')[0].innerHTML);
+        redPacket.innerHTML=ret[0].redPacket;
+        if(ret[0].redPacket>0){
+        	redPacket.style.color='#f83215';
+        }
+        count.innerHTML=ret[0].count;
+        ticket.innerHTML=ret[0].ticket;
+    })
+}
+</script>
+
+</html>

@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>首页</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <style>
+    body,
+    html {
+        height: 100%;
+        background-color: #f0efed;
+    }
+    
+    .swipe {
+        /*height: 163px;*/
+    }
+    
+    .list .item {
+        display: flex;
+        display: -webkit-flex;
+        display: -webkit-box;
+        flex-flow: row;
+        -webkit-flex-flow: row;
+        -webkit-box-orient: horizontal;
+        background-color: #fff;
+        color: #646464;
+        position: relative;
+        box-sizing: border-box;
+        font-size: 12px;
+        padding: 15px 8px;
+        box-sizing: border-box;
+        line-height: 25px;
+        border-bottom: 1px solid #e4e4e4;
+        /*height: 144px;*/
+    }
+    
+    .list .item:last-child {
+        border-bottom: none;
+    }
+    
+    .item .left {
+        width: 105px;
+        text-align: center;
+    }
+    
+    .item .left img {
+        width: 90px;
+        border: 1px solid #f1f1f1;
+    }
+    
+    .item .con {
+        flex: 1;
+        -webkit-flex: 1;
+        -webkit-box-flex: 1;
+    }
+    
+    .item .con>div {
+        position: relative;
+    }
+    
+    .item .title {
+        font-size: 15px;
+        font-weight: 600;
+        position: relative;
+        color: #000000;
+        padding-right: 35px;
+        /*line-height: 31px;*/
+        text-overflow: -o-ellipsis-lastline;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+    }
+    
+    .item .distance {
+        position: absolute;
+        right: 0;
+        top: 0;
+        font-size: 10px;
+        font-weight: normal;
+        color: #505050;
+    }
+    
+    .send {
+        position: relative;
+    }
+    
+    .right {
+        position: absolute;
+        right: 0;
+        top: 5px;
+    }
+    
+    .send .right {
+        height: 15px;
+        line-height: 15px;
+        text-align: center;
+        background-color: #ffd600;
+        display: inline-block;
+        padding: 0 6px;
+        /*font-size: 9px;*/
+        color: #784203;
+        font-weight: normal;
+        border-radius: 5px;
+        vertical-align: baseline;
+    }
+    
+    .minus {
+        position: absolute;
+        top: 5px;
+        height: 15px;
+        width: 15px;
+        color: #fff;
+        background-color: #ff5d5f;
+        line-height: 15px;
+        text-align: center;
+    }
+    
+    .minus.first {
+        background-color: #ffa626;
+    }
+    
+    .m_con {
+        box-sizing: border-box;
+        width: 100%;
+        padding-left: 24px;
+        color: #9d9d9d;
+        text-overflow: -o-ellipsis-lastline;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+    }
+    
+    .search {
+        position: absolute;
+        top: 0;
+        width: 100%;
+        box-sizing: border-box;
+        z-index: 9999;
+    }
+    
+    .search form {
+        position: absolute;
+        top: 0;
+        width: 100%;
+        padding: 5px 8px;
+        box-sizing: border-box;
+    }
+    
+    .search-cover {
+        background: #ffffff;
+        opacity: 0.2;
+        width: 100%;
+        height: 40px;
+        top: 0;
+        margin: 0 auto;
+    }
+    
+    .input {
+        background: #fff;
+        border-radius: 15px;
+        height: 30px;
+        line-height: 30px;
+        text-align: center;
+        width: 100%;
+        border: 1px solid #b6b6b6;
+    }
+    </style>
+</head>
+
+<body>
+    <!-- <div class="search">
+        <div class="search-cover"></div>
+        <form>
+        <div class="input">奶茶</div></form>
+    </div> -->
+    <div class="swipe" id="swipe"></div>
+    <ul class="list" id="list">
+        <!--  <li class="item">
+            <div class="left"><img src="../image/home/img_1.png" alt=""></div>
+            <div class="con">
+                <div class="title"><div>  正一味(健翔桥家乐福店)  </div>
+                    <div class="distance">595米</div>
+                </div>
+                <div>月售745单
+                    <div class="right">30分钟</div>
+                </div>
+                <div class="send">起送￥20<span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>配送￥5
+                    <div class="right">美团专送</div>
+                </div>
+                <div class="">
+                    <div class="minus">减</div>
+                    <div class="m_con">{{=data.first}}</div>
+                </div>
+                <div class="">
+                    <div class="minus first">首</div>
+                    <div class="m_con">{{=data.first}}</div>
+                </div>
+            </div>
+        </li> -->
+    </ul>
+</body>
+<script type='text/template' id="items">
+    {{~ it:data }}
+    <li class="item">
+        <div class="left"><img src="../image/home/zd.png" id="img{{=data.id}}"></div>
+        <div class="con">
+            <div class="title">
+                {{=data.title}}
+                <div class="distance">{{=data.distance}}米</div>
+            </div>
+            <div>月售{{=data.count }}单
+                <div class="right">{{=data.time}}分钟</div>
+            </div>
+            <div class="send">起送￥{{=data.sendFee}}<span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>配送￥{{=data.packingFee}} {{?data.type==true}}
+                <div class="right">美团专送</div>
+                {{?}}
+            </div>
+            <div class="">
+                <div class="minus">减</div>
+                <div class="m_con">{{=data.discount}}</div>
+            </div>
+            <div class="">
+                <div class="minus first">首</div>
+                <div class="m_con">{{=data.first}} </div>
+            </div>
+        </div>
+    </li>
+    {{~}}
+</script>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/SHA1.js"></script>
+<script type="text/javascript" src="../script/APICloud-rest.js"></script>
+<script type="text/javascript" src="../script/doT.min.js"></script>
+<script type="text/javascript">
+//
+apiready = function() {
+    header = $api.byId('header');
+    if (api.systemType == 'ios') {
+        $api.fixIos7Bar(header);
+         api.setStatusBarStyle({
+        style: 'dark'
+    });
+    }
+    // fnScroll();
+   
+    document.getElementById('swipe').style.height = 0.444 * api.winWidth + "px";
+    swipe();
+    fnInit();
+    // fnScroll();
+    getData();
+    fnSetRefresh();
+
+
+
+};
+var list, dot, pageNum = 0;;
+var searchCover = document.getElementById('searchCover');
+
+// function fnScroll() {
+//     if (api.systemType == 'ios') {
+//         window.onscroll = function() {
+//             // alert(1);
+//             // console.log(document.body.scrollTop)
+//             fnSetStatusBar
+//         };
+//     }
+
+// }
+
+// function fnSetStatusBar(style) {
+//     if (document.body.scrollTop > (0.444 * api.winWidth)) {
+//                 fnSetStatusBar('dark');
+//             } else {
+//                 fnSetStatusBar('light');
+//             }
+//     api.setStatusBarStyle({
+//         style: style
+//     });
+// }
+
+function fnInit() {
+    list = $api.byId('list');
+    var items = $api.byId('items');
+    dot = doT.template(items.innerHTML);
+    //上拉加载更多
+    api.addEventListener({
+        name: 'scrolltobottom',
+        extra: {
+            threshold: 200
+        }
+    }, function() {
+        getData();
+    });
+}
+var UIScrollPicture;
+//轮播图
+function swipe() {
+    UIScrollPicture = api.require('UIScrollPicture');
+    UIScrollPicture.open({
+        rect: {
+            x: 0,
+            y: 0,
+            w: api.winWidth,
+            h: 0.444 * api.winWidth
+        },
+        data: {
+            paths: [
+                'widget://image/home/swipe_1.jpg',
+                'widget://image/home/swipe_2.jpg',
+                'widget://image/home/swipe_3.png',
+                'widget://image/home/swipe_4.png',
+                'widget://image/home/swipe_5.jpg'
+            ],
+        },
+        styles: {
+            indicator: {
+                align: 'center',
+                color: '#FFFFFF',
+                activeColor: '#DA70D6'
+            }
+        },
+        placeholderImg: 'widget://res/slide1.jpg',
+        contentMode: 'scaleToFill',
+        interval: 3,
+        fixedOn: api.frameName,
+        loop: true,
+        fixed: false
+    }, function(ret, err) {
+        if (ret) {
+            // alert(JSON.stringify(ret));
+        } else {
+            alert(JSON.stringify(err));
+        }
+    });
+}
+var pageNum = 0,
+    isPull, //是否为上拉刷新
+    open = true, //第一次请求数据
+    isGet = false; //是否正在请求数据
+
+//请求获取数据
+function getData(isPull) {
+    if (isGet) {
+        return;
+    }
+    isGet = true;
+    var now = Date.now();
+    if (pageNum != 0 || open == true) {
+        open = false;
+        api.showProgress({
+            style: 'default',
+            animationType: 'fade',
+            title: '努力加载中...',
+            text: '请稍等...',
+            modal: false
+        });
+    }
+
+    var appId = "A6937689696749";
+    var appKey = SHA1(appId + 'UZ' + '920F76F9-D407-4256-D7DF-D921580338A7' + 'UZ' + now) + '.' + now;
+    var url = 'https://d.apicloud.com/mcm/api/list?filter={"where":{},"skip":' + pageNum * 5 + ',"limit":' + 5 + '}';
+    console.log("url:" + url)
+    console.log(appKey)
+    var headers = {
+        "X-APICloud-AppId": appId,
+        "X-APICloud-AppKey": appKey
+    };
+    api.ajax({
+        url: url,
+        method: 'get',
+        catche: true,
+        "headers": headers,
+    }, function(ret, err) {
+        api.hideProgress();
+        if (isPull) {
+            api.refreshHeaderLoadDone();
+        }
+
+        isGet = false;
+        if (ret) {
+            if (ret.length == 0) {
+                api.toast({
+                    msg: '没有更多了',
+                    duration: 2000,
+                    location: 'bottom'
+                });
+                isEmpty = true;
+                return;
+            }
+            if (pageNum == 0) {
+                list.innerHTML = dot(ret);
+            } else {
+                $api.append(list, dot(ret));
+                // list.innerHTML += dot(ret);
+            }
+
+
+            for (var i = 0; i < ret.length; i++) {
+                catcheImg(ret, i);
+            }
+            pageNum++;
+        } else {
+            alert(err.msg)
+        }
+    });
+}
+
+
+function catcheImg(data, num) {
+    if (data.length <= num) {
+        return;
+    }
+    api.imageCache({
+        url: data[num].img.url,
+        thumbnail: true
+    }, function(ret, err) {
+        if (ret) {
+            // alert(ret.url)
+            // console.log("num"+num);
+            $api.attr($api.byId('img' + data[num].id), 'src', ret.url);
+            // $api.byId('img' + data[num].id).src = ret.url;
+            // catcheImg(data, num + 1);
+        } else {
+            // alert(JSON.stringify(err));
+        }
+    });
+}
+//设置刷新
+function fnSetRefresh() {
+    //          api.setCustomRefreshHeaderInfo({
+    //         bgColor: '#ffffff',
+    //         image: {
+    //             pull: 'widget://image/refresh/a5b.png',
+    //             transform: [
+    // 'widget://image/refresh/a50.png',
+    //             'widget://image/refresh/a51.png',
+    //             'widget://image/refresh/a52.png',
+    //             'widget://image/refresh/a53.png',
+    //             'widget://image/refresh/a54.png',
+    //             'widget://image/refresh/a55.png',
+    //             'widget://image/refresh/a56.png',
+    //             'widget://image/refresh/a57.png',
+    //             'widget://image/refresh/a58.png',
+    //             'widget://image/refresh/a59.png'
+
+    //             ],
+    //             load: [
+    //                         'widget://image/refresh/a50.png',
+    //             'widget://image/refresh/a51.png',
+    //             'widget://image/refresh/a52.png',
+    //             'widget://image/refresh/a53.png',
+    //             'widget://image/refresh/a54.png',
+    //             'widget://image/refresh/a55.png',
+    //             'widget://image/refresh/a56.png',
+    //             'widget://image/refresh/a57.png',
+    //             'widget://image/refresh/a58.png',
+    //             'widget://image/refresh/a59.png'
+    //             ]
+    //         }
+    //     }, function() {
+    //         pageNum = 0;
+    //         isPull=true;
+    //         getData(isPull);
+    //     });
+    api.setCustomRefreshHeaderInfo({
+        bgColor: '#eee',
+        images: [
+            'widget://image/refresh/a50.png',
+            'widget://image/refresh/a51.png',
+            'widget://image/refresh/a52.png',
+            'widget://image/refresh/a53.png',
+            'widget://image/refresh/a54.png',
+            'widget://image/refresh/a55.png',
+            'widget://image/refresh/a56.png',
+            'widget://image/refresh/a57.png',
+            'widget://image/refresh/a58.png',
+            'widget://image/refresh/a59.png'
+        ],
+    }, function() {
+        //下拉刷新被触发，自动进入加载状态，使用 api.refreshHeaderLoadDone() 手动结束加载中状态
+        //下拉刷新被触发，使用 api.refreshHeaderLoadDone() 结束加载中状态  
+        // api.refreshHeaderLoading();
+        pageNum = 0;
+        isPull = true;
+        getData(isPull);
+    });
+}
+</script>
+
+</html>

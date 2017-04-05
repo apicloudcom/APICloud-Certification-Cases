@@ -1,0 +1,1 @@
+用于UICityList模块的资源文件

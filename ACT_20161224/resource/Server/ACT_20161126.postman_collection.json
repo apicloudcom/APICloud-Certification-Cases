@@ -1,0 +1,51 @@
+{
+	"id": "9f32b5ff-b60f-7c40-02b5-0890ec2e2070",
+	"name": "ACT_20161126",
+	"description": "ACT_20161126",
+	"order": [
+		"497bd09a-1b86-e1f4-d0da-770d7972a458",
+		"92c4907d-1087-5c7e-1256-0a260e2cea9f"
+	],
+	"folders": [],
+	"timestamp": 1479389775811,
+	"owner": "1386623",
+	"public": false,
+	"requests": [
+		{
+			"id": "497bd09a-1b86-e1f4-d0da-770d7972a458",
+			"headers": "X-APICloud-AppId: A6937689696749\nX-APICloud-AppKey: 6af230ce16edcae75f2d5d35e2830cabebf9ee3d.1482401873476\n",
+			"url": "https://d.apicloud.com//mcm/api/list?filter={\"where\":{},\"skip\":0,\"limit\":20}",
+			"preRequestScript": null,
+			"pathVariables": {},
+			"method": "GET",
+			"data": null,
+			"dataMode": "params",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1482408275620,
+			"name": "list",
+			"description": "首页列表首页列表接口",
+			"collectionId": "9f32b5ff-b60f-7c40-02b5-0890ec2e2070",
+			"responses": []
+		},
+		{
+			"id": "92c4907d-1087-5c7e-1256-0a260e2cea9f",
+			"headers": "X-APICloud-AppId: A6937689696749\nX-APICloud-AppKey: 6af230ce16edcae75f2d5d35e2830cabebf9ee3d.1482401873476\n",
+			"url": "https://d.apicloud.com//mcm/api/my?filter={\"where\":{},\"skip\":0,\"limit\":1}",
+			"preRequestScript": null,
+			"pathVariables": {},
+			"method": "GET",
+			"data": null,
+			"dataMode": "params",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1482408700094,
+			"name": "my",
+			"description": "个人详情接口",
+			"collectionId": "9f32b5ff-b60f-7c40-02b5-0890ec2e2070",
+			"responses": []
+		}
+	]
+}

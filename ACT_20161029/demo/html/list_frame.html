@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <style>
+    html,
+    body {
+        width: 100%;
+        height: 100%;
+        margin: 0px;
+        padding: 0px;
+    }
+    
+    .main.hidden {
+        display: none;
+    }
+    
+    .box {
+        width: 95%;
+        margin: 20px auto;
+        border: 1px solid #f5f5f5;
+        border-radius: 7px;
+    }
+    
+    .info {
+        width: 95%;
+        height: 35px;
+        margin: 0 auto;
+        padding: 0 7px;
+        border-bottom: 1px solid #f5f5f5;
+    }
+    
+    .icon {
+        width: 16px;
+        height: 35px;
+        background-image: url(../image/icon.png);
+        background-repeat: no-repeat;
+        background-size: 16px 16px;
+        background-position: 0;
+        float: left;
+    }
+    
+    .time {
+        margin-left: 5px;
+        line-height: 35px;
+        float: left;
+    }
+    
+    .sta {
+        line-height: 35px;
+        float: right;
+        color: #9ac200;
+    }
+    
+    .info2 {
+        margin: 0 auto;
+        width: 95%;
+        height: 100px;
+        position: relative;
+    }
+    
+    .name {
+        position: absolute;
+        left: 110px;
+        top: 0;
+        font-size: 17px;
+        color: #333;
+        line-height: 53px;
+    }
+    
+    .fot {
+        position: absolute;
+        left: 110px;
+        bottom: 0;
+        font-size: 16px;
+        color: #b8b8b8;
+        line-height: 33px;
+    }
+    
+    .per {
+        float: left;
+    }
+    
+    .perName {
+        margin-left: 7px;
+        float: left;
+    }
+    
+    .line {
+        float: left;
+        margin: 10px 5px 0px;
+        height: 15px;
+        width: 1px;
+        background-color: #b8b8b8;
+    }
+    
+    .perTit {
+        float: left;
+    }
+    
+    .rgt {
+        top: 0;
+        right: 0;
+        width: 21px;
+        height: 100px;
+        background-image: url(../image/right.png);
+        background-repeat: no-repeat;
+        background-size: 21px 21px;
+        background-position: 0;
+        position: absolute;
+    }
+    
+    .cover {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100px;
+        height: 80%;
+        margin-right: 5px;
+        margin-top: 5px;
+    }
+    </style>
+</head>
+
+<body>
+    <div id="main" class="main">
+    </div>
+</body>
+<script id="template" type="text/template">
+    {{~ it:data}}
+    <div class="box" tapmode onclick="lisrDtl('{{= data.id}}','{{= data.name}}')">
+        <div class="info">
+            <div class="icon"></div>
+            <div class="time time1">
+                {{= data.courseTime}}
+            </div>
+            <div class="sta sta1">
+                {{= data.type.name}}
+            </div>
+        </div>
+        <div class="info2">
+            <img onload="fnImageCache(this);" data-url="{{= data.cover.url}}" src="../image/loading.png" class="cover cover1">
+            <div class="name name1">{{= data.name}}</div>
+            <div class="fot">
+                <div class="per">
+                    讲师
+                </div>
+                <div class="line"></div>
+                <div class="perTit perTit1">{{= data.teacher}}</div>
+            </div>
+            <div class="rgt"></div>
+        </div>
+    </div>
+    {{~}}
+</script>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/doT.min.js"></script>
+<script type="text/javascript">
+// 初始化
+var skip = 0,
+    LIMIT = 5;
+apiready = function() {
+    init();
+    listAjax();
+    initPullRefresh();
+    scrolltobottom();
+};
+
+var main, dot, template;
+
+function init() {
+    main = $api.byId('main');
+    var template = $api.byId('template');
+    dot = doT.template(template.innerHTML);
+}
+// list页数据请求
+function listAjax(loadMore_) {
+    api.showProgress({
+        style: 'default',
+        title: '努力加载中...',
+        modal: true
+    });
+    if (!loadMore_) {
+        skip = 0;
+    }
+    data = {
+        fields: {},
+        where: {},
+        include: ['typePointer'],
+        skip: skip,
+        limit: LIMIT
+    };
+    data = JSON.stringify(data);
+    api.ajax({
+        url: 'http://d.apicloud.com/mcm/api/video?filter=' + data,
+        method: 'get',
+        headers: {
+            "X-APICloud-AppId": "A6922938320433",
+            "X-APICloud-AppKey": "bf08237883477a7a6b88b41b0c55ceb7f6839a84.1477487496656"
+        },
+    }, function(ret, err) {
+        api.hideProgress();
+        api.refreshHeaderLoadDone();
+        if (ret) {
+            skip += LIMIT;
+            if (loadMore_) {
+               	$api.append(main, dot(ret)); 
+            } else {
+                $api.html(main, dot(ret));
+            }
+            api.parseTapmode();
+        } else {
+            alert(JSON.stringify(err));
+        }
+    });
+}
+
+
+// 根据不同列表进入各自详情页
+function lisrDtl(id, name) {
+    api.openWin({
+        name: 'detail',
+        url: './detail.html',
+        pageParam: {
+            videoId: id,
+            title: name,
+        },
+    });
+}
+
+function fnImageCache (ele_) {
+    var url = $api.attr(ele_, 'data-url');
+    if (url) {
+        api.imageCache({
+            url: url
+        }, function(ret, err){
+            if(ret && ret.status) {
+                ele_.src = ret.url;
+                $api.removeAttr(ele_, 'data-url');
+            }
+        });
+    }
+}
+
+function initPullRefresh() {
+    api.setRefreshHeaderInfo({
+        visible: true,
+        bgColor: '#f1f3f7',
+        textColor: '#444',
+        showTime: false
+    }, function(ret, err) {
+        listAjax(false);
+    });
+};
+
+function scrolltobottom() {
+    api.addEventListener({
+        name: 'scrolltobottom',
+        extra: {
+            threshold: 50
+        }
+    }, function(ret, err) {
+        listAjax(true);
+    });
+}
+</script>
+</html>

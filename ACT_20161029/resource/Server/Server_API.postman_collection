@@ -1,0 +1,117 @@
+{
+	"id": "02ac1580-c3e5-9445-df5c-3405846ca512",
+	"name": "ACT_20161029",
+	"description": "APICloud Certification Test Server IF For 20161029",
+	"order": [
+		"bda313c7-3f28-620e-db74-1ab7a8217f3b",
+		"aa3dd52a-bf29-3757-6613-f364d596c607",
+		"5ade737a-235a-2a35-4c57-b715ce47304e",
+		"0fcf078c-f70a-53eb-119f-e0b02a54be72"
+	],
+	"folders": [],
+	"timestamp": 1477654188286,
+	"owner": "903154",
+	"public": false,
+	"requests": [
+		{
+			"id": "0fcf078c-f70a-53eb-119f-e0b02a54be72",
+			"headers": "X-APICloud-AppId: A6922938320433\nX-APICloud-AppKey: bf08237883477a7a6b88b41b0c55ceb7f6839a84.1477487496656\n",
+			"url": "http://d.apicloud.com/mcm/api/video?filter={\"fields\":{},\"where\":{\"id\":\"5810a0da958fb354565b9aa0\"},\"include\": [\"typePointer\"],\"skip\":0,\"limit\":1}",
+			"preRequestScript": null,
+			"pathVariables": {},
+			"method": "GET",
+			"data": null,
+			"dataMode": "params",
+			"version": 2,
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1477655211322,
+			"name": "videoInfo",
+			"description": "get video info.",
+			"collectionId": "02ac1580-c3e5-9445-df5c-3405846ca512",
+			"responses": []
+		},
+		{
+			"id": "5ade737a-235a-2a35-4c57-b715ce47304e",
+			"headers": "X-APICloud-AppId: A6922938320433\nX-APICloud-AppKey: bf08237883477a7a6b88b41b0c55ceb7f6839a84.1477487496656\n",
+			"url": "http://d.apicloud.com/mcm/api/video?filter={\"fields\":{},\"where\":{},\"include\": [\"typePointer\"],\"skip\":0,\"limit\":5}",
+			"preRequestScript": null,
+			"pathVariables": {},
+			"method": "GET",
+			"data": null,
+			"dataMode": "params",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1477654982506,
+			"name": "videoList",
+			"description": "get video list.",
+			"collectionId": "02ac1580-c3e5-9445-df5c-3405846ca512",
+			"responses": []
+		},
+		{
+			"id": "aa3dd52a-bf29-3757-6613-f364d596c607",
+			"headers": "X-APICloud-AppId: A6922938320433\nX-APICloud-AppKey: bf08237883477a7a6b88b41b0c55ceb7f6839a84.1477487496656\n",
+			"url": "http://d.apicloud.com/mcm/api/user/login",
+			"preRequestScript": null,
+			"pathVariables": {},
+			"method": "POST",
+			"data": [
+				{
+					"key": "username",
+					"value": "test",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "password",
+					"value": "123456",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"dataMode": "params",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1477667633592,
+			"name": "login",
+			"description": "login",
+			"collectionId": "02ac1580-c3e5-9445-df5c-3405846ca512",
+			"responses": []
+		},
+		{
+			"id": "bda313c7-3f28-620e-db74-1ab7a8217f3b",
+			"headers": "X-APICloud-AppId: A6922938320433\nX-APICloud-AppKey: bf08237883477a7a6b88b41b0c55ceb7f6839a84.1477487496656\n",
+			"url": "http://d.apicloud.com/mcm/api/user",
+			"preRequestScript": null,
+			"pathVariables": {},
+			"method": "POST",
+			"data": [
+				{
+					"key": "username",
+					"value": "test",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "password",
+					"value": "123456",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"dataMode": "params",
+			"version": 2,
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1477667642198,
+			"name": "register",
+			"description": "register",
+			"collectionId": "02ac1580-c3e5-9445-df5c-3405846ca512",
+			"responses": []
+		}
+	]
+}

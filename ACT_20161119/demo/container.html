@@ -1,0 +1,34 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <style type>
+      body{
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: flex;
+
+        -webkit-box-orient: vertical;
+        -webkit-flex-direction: column;
+        flex-direction: column;
+
+        margin: 0px;
+      }
+    </style>
+</head>
+<body>
+</body>
+<script>
+if (typeof Promise !== "undefined") {
+    var script = document.createElement('script')
+    script.src = "./lib/container.ios.js"
+    document.body.appendChild(script)
+}else {
+  var script = document.createElement('script')
+  script.src = "./lib/container.android.js"
+  document.body.appendChild(script)
+}
+</script>
+</html>

@@ -1,0 +1,217 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+		<title>底部导航</title>
+		<link rel="stylesheet" type="text/css" href="./css/api.css"/>
+		<link rel="stylesheet" type="text/css" href="./css/style.css"/>
+		<style>
+			header {
+				background-color: #6ab494;
+			}
+			header ul li {
+				height: 50px;
+				line-height: 50px;
+				text-align: center;
+				display: none;
+				color: #FFF;
+				position: relative;
+				font-size: 18px;
+			}
+			header ul li.active {
+				display: block;
+			}
+			#footer {
+				background-color: #f2f2f2;
+			}
+			#footer ul li {
+				padding-top: 36px;
+				padding-bottom: 4px;
+				background: url() no-repeat center 2px;
+				background-size: auto 30px;
+				text-align: center;
+				color: #696969;
+			}
+			#footer ul li.active {
+				color: #6ab494;
+			}
+			#footer ul li:nth-child(1) {
+				background-image: url(./image/tab_icon_1_default.png);
+			}
+			#footer ul li:nth-child(2) {
+				background-image: url(./image/tab_icon_2_default.png);
+			}
+			#footer ul li:nth-child(1).active {
+				background-image: url(./image/tab_icon_1_foucsed.png);
+			}
+			#footer ul li:nth-child(2).active {
+				background-image: url(./image/tab_icon_2_foucsed.png);
+			}
+			.header_tuan {
+				width: 100%;
+				height: 50px;
+			}
+			.header_tuan .left {
+				height: 50px;
+			}
+			.header_tuan .left.active {
+				background-color: #274e13;
+			}
+			.header_tuan .left .city {
+				margin-left: 10px;
+				height: 50px;
+				line-height: 50px;
+				font-size: 14px;
+				color: #FFF;
+			}
+			.header_tuan .left .arrow {
+				width: 20px;
+				height: 50px;
+				background-image: url(./image/ic_arrow.png);
+				background-size: 20px 20px;
+				background-position: center center;
+				background-repeat: no-repeat;
+			}
+			.search_input {
+				height: 30px;
+				margin-top: 10px;
+				margin-right: 10px;
+				margin-left: 5px;
+				line-height: 35px;
+				background-color: #F2F2F2;
+				border-radius: 35px;
+				font-size: 14px;
+				color: #A5A5A5;
+				text-align: center;
+			}
+			.search_in {
+				width: 60px;
+				height: 30px;
+				margin: 0 auto;
+			}
+			.search_icon {
+				width: 20px;
+				height: 30px;
+				background-image: url(./image/ic_search.png);
+				background-size: 15px 15px;
+				background-position: center center;
+				background-repeat: no-repeat;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="wrap" class="flex-wrap flex-vertical">
+			<header>
+				<ul>
+					<li class="border-b active" >
+						<div class="header_tuan flex-wrap">
+							<div class="left flex-wrap" id="left" tapmode="active" onclick="selectCity()">
+								<div class="city flex-con" id="city">
+									北京市
+								</div>
+								<div class="arrow" id="arrow"></div>
+							</div>
+							<div class="search_input flex-con ">
+								<div class="search_in flex-wrap">
+									<div class="search_icon flex-con" id="search_icon"></div>
+									<div class="search flex-con" id="search">
+										搜索
+									</div>
+								</div>
+							</div>
+						</div>
+					</li>
+					<li class="border-b " >
+						我的
+					</li>
+				</ul>
+			</header>
+			<div id="main" class="flex-con"></div>
+			<div id="footer" class="border-t">
+				<ul class="flex-wrap" >
+					<li tapmode="hover" onclick="randomSwitchBtn( this );" class="flex-con active" >
+						团购
+					</li>
+					<li tapmode="hover" onclick="randomSwitchBtn( this );" class="flex-con" >
+						我的
+					</li>
+				</ul>
+			</div>
+		</div>
+	</body>
+</html>
+<script type="text/javascript" src="script/api.js"></script>
+<script type="text/javascript">
+	apiready = function() {
+		$api.fixStatusBar($api.dom('header'));
+		api.setStatusBarStyle({
+			style : 'dark',
+			color : '#6ab494'
+		});
+		funIniGroup();
+	}
+	function funIniGroup() {
+		var eHeaderLis = $api.domAll('header li'), frames = [];
+		for (var i = 0, len = eHeaderLis.length; i < len; i++) {
+			frames.push({
+				name : 'frame' + i,
+				url : './html/frame' + i + '.html',
+				bgColor : 'rgba(0,0,0,.2)',
+				customRefreshHeader : 'pullRefreshLoop',
+				bounces : true
+			})
+		}
+		api.openFrameGroup({
+			name : 'group',
+			scrollEnabled : false,
+			rect : {
+				x : 0,
+				y : $api.dom('header').offsetHeight,
+				w : api.winWidth,
+				h : $api.dom('#main').offsetHeight
+			},
+			index : 0,
+			frames : frames
+		}, function(ret, err) {
+		});
+	}
+
+	// 随意切换按钮
+	function randomSwitchBtn(tag) {
+		if (tag == $api.dom('#footer li.active'))
+			return;
+		var eFootLis = $api.domAll('#footer li'), eHeaderLis = $api.domAll('header li'), index = 0;
+		for (var i = 0, len = eFootLis.length; i < len; i++) {
+			if (tag == eFootLis[i]) {
+				index = i;
+			} else {
+				$api.removeCls(eFootLis[i], 'active');
+				$api.removeCls(eHeaderLis[i], 'active');
+			}
+		}
+		$api.addCls(eFootLis[index], 'active');
+		$api.addCls(eHeaderLis[index], 'active');
+		api.setFrameGroupIndex({
+			name : 'group',
+			index : index
+		});
+	}
+
+	function selectCity() {
+		api.openWin({
+			name : 'citylist',
+			url : 'html/citylist.html',
+			animation : {
+				type : "none"
+			}
+		});
+	}
+
+	function changeCity() {
+		var selectCity = $api.byId("city");
+		var city = $api.getStorage("city");
+		$api.html(selectCity, city);
+	}
+</script>

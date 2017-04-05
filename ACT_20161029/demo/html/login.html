@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <style>
+    html,
+    body {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background-image: url(../image/bg.png);
+        background-repeat: no-repeat;
+        background-size: 100%;
+        background-position: 0;
+        position: relative;
+    }
+    
+    .main {
+    position: absolute;
+    bottom: 0px;
+     height: 60%; 
+    width: 100%;
+    padding: 0 20px;
+    box-sizing: border-box;
+    }
+    
+    .main input {
+        outline: medium;
+        width: 100%;
+        text-align: center;
+        font-size: 17px;
+        color: #fff;
+        height: 72px;
+    }
+    
+    .info {
+        height: 72px;
+    }
+    
+    .num {
+        border-bottom: 1px solid #b099c3;
+    }
+    
+    .login.hidden {
+        display: none;
+    }
+    
+    .reg.hidden {
+        display: none;
+    }
+    
+    .login {
+        width: 100%;
+        height: 57px;
+        line-height: 57px;
+        text-align: center;
+        border-radius: 5px;
+        border: 1px solid #785ba0;
+        font-size: 17px;
+        color: #fff;
+    }
+    
+    .reg {
+     position: absolute; 
+    /* display: block; */
+     left: 50%; 
+     margin-left: -5%; 
+     /*bottom: 5px; */
+     margin-top: 38%; 
+    /*margin: 40% auto 0;*/
+    width: 10%;
+    text-align: center;
+    font-size: 13px;
+    height: 30px;
+    color: #fff;
+}
+    
+    .reg.active {
+        display: block;
+        margin: 40% auto 0px;
+        bottom: 0px;
+        width: 60px;
+        height: 60px;
+        line-height: 50px;
+        text-align: center;
+        font-size: 13px;
+        color: #fff;
+    }
+    
+    .active {
+        margin-top: 5%;
+        width: 100%;
+        height: 57px;
+        line-height: 57px;
+        text-align: center;
+        border-radius: 5px;
+        border: 1px solid #785ba0;
+        font-size: 17px;
+        color: #fff;
+        bottom: 30%;
+        display: none;
+    }
+    
+    .active.hidden {
+        display: none;
+    }
+    </style>
+</head>
+
+<body>
+    <div class="main">
+        <div class="num info">
+            <input class="num_ipt" type="text" placeholder="请输入用户名">
+        </div>
+        <div class="sec info">
+            <input class="sec_ipt" type="password" placeholder="请输入密码">
+        </div>
+        <div class="login" tapmode="" onclick="logBtn()">
+            登录
+        </div>
+        <div class="reg" tapmode="" onclick="regBtn(this)">
+            注册
+        </div>
+        <div class="active" tapmode="" onclick="fnReg()">
+            注册
+        </div>
+    </div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/sha1.js"></script>
+<script type="text/javascript">
+// 初始化
+var num_ipt = $api.dom(".num_ipt");
+var main = $api.dom(".main");
+var sec_ipt = $api.dom(".sec_ipt");
+var reg = $api.dom(".reg");
+var login = $api.dom(".login");
+apiready = function() {
+    
+    fnInitEvent();
+    if ($api.getStorage('username')) {
+        $api.val(num_ipt, $api.getStorage('username'));
+        $api.val(sec_ipt, $api.getStorage('password'));
+    }
+}
+// 点击事件
+function regBtn(el) {
+    $api.val(num_ipt, '');
+    $api.val(sec_ipt, '');
+    $api.addCls(login, "hidden");
+    el.style.display = 'none';
+    $api.dom('.active').style.display = 'block';
+};
+
+function fnReg() {
+    if ($api.val(num_ipt) != "" && $api.val(sec_ipt) != "") {
+        rgtAjax();
+    } else {
+        api.toast({
+            msg: '请填写相关信息',
+            duration: 2000,
+            location: 'bottom'
+        })
+    }
+};
+
+function logBtn() {
+    if ($api.val(num_ipt) !== "" || $api.val(sec_ipt) !== "") {
+        loginAjax();
+    }else {
+        api.toast({
+            msg: '请填写相关信息',
+            duration: 2000,
+            location: 'bottom'
+        })
+    }
+};
+// 返回键双击退出
+function fnInitEvent() {
+    var exitFlag = false;
+    api.addEventListener({
+        name: 'keyback'
+    }, function(ret, err) {
+        if (!exitFlag) {
+            api.toast({
+                msg: '再按一次退出',
+                duration: 2000,
+                location: 'bottom'
+            });
+            exitFlag = true;
+        } else {
+            api.closeWidget({
+                silent: true
+            });
+        }
+        setTimeout(function() {
+            exitFlag = false;
+        }, 2000);
+    });
+};
+// 注册数据请求
+function rgtAjax() {
+    var username = $api.val(num_ipt);
+    var password = $api.val(sec_ipt);
+    api.showProgress({
+        style: 'default',
+        animationType: 'fade',
+        title: '努力加载中...',
+        modal: true
+    });
+    api.ajax({
+        url: 'https://d.apicloud.com/mcm/api/user',
+        method: 'post',
+        headers: {
+            "X-APICloud-AppId": "A6922938320433",
+            "X-APICloud-AppKey": "c15b46398786f47adf550748e75cb9484ebde7de.1478145878316"
+        },
+        data: {
+            values: {
+                username: username,
+                password: password
+            } 
+        }
+    }, function(ret, err) {
+        api.hideProgress();
+        if (ret && ret.id) {
+            name = ret.username;
+            getRegInfo();
+        } else {
+            alert("注册失败");
+        }
+    });
+};
+// 注册成功后事件
+function getRegInfo() {
+    $api.val(sec_ipt, "");
+    $api.dom('.active').style.display = 'none';
+    $api.dom('.reg').style.display = 'block';
+    $api.removeCls(login, "hidden");
+    api.toast({
+        msg: '注册成功，请登录',
+        duration: 2000,
+        location: 'middle'
+    })
+}
+// 登陆数据请求
+function loginAjax() {
+    var username = $api.val(num_ipt);
+    var password = $api.val(sec_ipt);
+    api.showProgress({
+        style: 'default',
+        animationType: 'fade',
+        title: '努力加载中...',
+        modal: true
+    });
+    api.ajax({
+        url: 'http://d.apicloud.com/mcm/api/user/login/',
+        method: 'post',
+        headers: {
+            "X-APICloud-AppId": "A6922938320433",
+            "X-APICloud-AppKey": "bf08237883477a7a6b88b41b0c55ceb7f6839a84.1477487496656"
+        },
+        data: {
+            values: {
+                username: username,
+                password: password
+            } 
+        }
+    }, function(ret, err) {
+        api.hideProgress();
+        if (ret && ret.id) {
+            getLoginInfo();
+            $api.setStorage('username', $api.val(num_ipt));
+            $api.setStorage('password', $api.val(sec_ipt));
+        } else {
+            alert("登录失败");
+        }
+    });
+}
+// 登陆成功后事件
+function getLoginInfo() {
+    if (!$api.dom('.num_ipt').value.trim()) {
+        api.toast({
+            msg: '请输入您的用户名'
+        });
+    } else if (!$api.dom('.sec_ipt').value.trim()){
+        api.toast({
+            msg: '请输入您的密码'
+        });
+    } else {
+        api.openWin({
+            name: 'list',
+            url: './list.html',
+            slidBackEnabled: false
+        })
+    }
+}
+</script>
+
+</html>
