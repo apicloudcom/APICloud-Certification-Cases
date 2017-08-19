@@ -1,0 +1,349 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>Hello APP</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <style type="text/css">
+        html,
+        body {
+            height: 100%;
+        }
+
+        #wrap {
+            height: 100%;
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: flex;
+            -webkit-box-orient: vertical;
+            -webkit-flex-flow: column;
+            flex-flow: column;
+        }
+
+        #header {
+            text-align: center;
+            color: #fff;
+            width: 100%;
+            height: 200px;
+        }
+
+        #header h1 {
+            font-size: 20px;
+            height: 44px;
+            line-height: 44px;
+            margin: 0em;
+            color: #fff;
+        }
+
+        #main {
+            -webkit-box-flex: 1;
+            -webkit-flex: 1;
+            flex: 1;
+        }
+
+        .list {
+            margin: 14px;
+            margin-bottom: 0px;
+        }
+
+        .list-left {
+            justify-content: space-between;
+        }
+
+        .list-left>div {
+            margin-bottom: 16px;
+        }
+
+        .list-left:nth-child(1) {
+            display: flex;
+        }
+
+        .list-left:nth-child(1) img {
+            height: 21px;
+            width: 21px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .list-left:nth-child(1) .name {
+            color: #168c02;
+            margin-right: 10px;
+            font-size: 14px;
+        }
+
+        .list-left:nth-child(1) .time {
+            color: #c3c3c3;
+            font-size: 12px;
+        }
+
+        .list-right img {
+            height: 81px;
+            width: 81px;
+            margin-left: 20px;
+            margin-top: 20px;
+        }
+
+        .list-left .bottom {
+            color: #a1a1a1;
+            font-size: 12px;
+        }
+
+        .list-left .content {
+            font-size: 16px;
+        }
+
+        .list-m {
+            width: 100%;
+            border-bottom: 1px solid #c3c3c3;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="wrap">
+        <div id="header">
+            <h1>APICloud</h1>
+        </div>
+        <div id="main" class="flex flex-col">
+
+        </div>
+    </div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src='../script/doT.js'></script>
+<script type="text/template" id='list'>
+    {{~it:data}}
+    <div class="list-m" tapmode='active'>
+        <div class="list flex">
+            <div class="list-left flex-1 flex flex-col">
+                <div class="flex">
+                    <div>
+                        <img src="{{=data.author.avatar}}" onclick="readmore('{{=data.author.id}}')" alt=""></div>
+                    <div> <span class="name">{{=data.author.nickname}}</span></div>
+                    <div> <span class="time">{{=data.updatedAt}}天前</span></div>
+                </div>
+                <div class="content" onclick="openBrowser('http://www.jianshu.com/p/{{=data.slug}}'+','+'{{=data.title}}')">{{=data.title}}</div>
+                <div class="bottom">
+                    <span>{{=data.likes_count}} ·次阅</span>
+                    <span>{{=data.views_count}} ·评论</span>
+                    <span>{{=data.comments_count}} ·喜欢</span>
+                </div>
+            </div>
+            <div class="list-right">
+                <img src="{{=data.list_image}}" data-url='{{=data.list_image}}' alt="">
+            </div>
+
+        </div>
+    </div>
+    {{~}}
+</script>
+<script type="text/javascript">
+    apiready = function() {
+        var header = $api.byId('header');
+        init();
+    };
+
+    function readmore(id) {
+        var judge = false;
+        for (var i = 0; i < allResultData.length; i++) {
+            if (allResultData[i].author.id = id && !judge) {
+                judge = true;
+                api.openWin({
+                    name: 'detail',
+                    url: 'details.html',
+                    pageParam: {
+                        data: allResultData[i]
+                    }
+                });
+            }
+        }
+    }
+
+    function openBrowser(data) {
+
+        api.openWin({
+            name: 'page1',
+            url: './page3.html',
+            pageParam: {
+                url: data.split(',')[0],
+                title:data.split(',')[1],
+            }
+        });
+
+    }
+
+    function initPullRefresh() {
+        api.setRefreshHeaderInfo({
+            visible: true,
+            bgColor: '#f1f3f7',
+            textColor: '#444',
+            showTime: true
+        }, function(ret, err) {
+            getListData(false);
+        });
+    };
+
+    function scrolltobottom() {
+        api.addEventListener({
+            name: 'scrolltobottom',
+            extra: {
+                threshold: 50 //距离底部距离
+            }
+        }, function(ret, err) {
+            getListData(true);
+        });
+    }
+
+    function init() {
+        getSlideImg();
+        getListData();
+        initPullRefresh();
+        scrolltobottom();
+    };
+
+    function getSlideImg() {
+        api.ajax({
+            url: ' https://d.apicloud.com//mcm/api/banner?filter={"where":{},"skip":0,"limit":20}',
+            method: 'get',
+            headers: {
+                'X-APICloud-AppId': 'A6924735141113',
+                'X-APICloud-AppKey': '2eb2e629e08199e07d59b7a690fbedd0f1a889f5.1479311556274'
+            }
+        }, function(ret, err) {
+            if (ret) {
+                slide(ret);
+            } else {
+                alert('err' + JSON.stringify(err));
+            }
+        });
+    };
+    var skip = 0;
+    var allResultData;
+
+    function getListData(loadMore) {
+        var filter = {
+            where: {},
+            skip: loadMore ? skip : 0,
+            limit: 5,
+            include: 'authorPointer',
+        }
+        api.ajax({
+            url: ' https://d.apicloud.com//mcm/api/post?filter=' + JSON.stringify(filter),
+            method: 'get',
+            headers: {
+                'X-APICloud-AppId': 'A6924735141113',
+                'X-APICloud-AppKey': '2eb2e629e08199e07d59b7a690fbedd0f1a889f5.1479311556274'
+            }
+        }, function(ret, err) {
+            if (ret) {
+                allResultData = ret;
+                for (var i = 0; i < ret.length; i++) {
+                    var timeTemp = ret[i].updatedAt;
+                    // '2016-11-16T12:12:43.388Z'
+                    // console.log(JSON.stringify(ret));
+
+                    var s1 = new Date(timeTemp);
+                    var s2 = new Date();
+
+                    var days = s2.getTime() - s1.getTime();
+                    var time = parseInt(days / (1000 * 60 * 60 * 24));
+                    ret[i].updatedAt = time;
+
+                }
+                var resultText = doT.template(list.innerHTML)(ret);
+                api.refreshHeaderLoadDone();
+                if (loadMore) {
+                    skip += 5;
+                    $api.append($api.dom('#main'), resultText);
+                } else {
+                    $api.html($api.dom('#main'), resultText);
+                }
+                if (ret.length < 1) {
+                    alert('没有更多了')
+                }
+                // console.log(JSON.stringify(ret));
+
+            } else if (err) {
+                console.log('err' + JSON.stringify(err));
+            }
+        });
+
+    };
+
+
+    function imageCache(url) {
+        api.imageCache({
+            url: url
+        }, function(ret, err) {
+            // console.log('ret' + JSON.stringify(ret));
+            // console.log('err' + JSON.stringify(err));
+        });
+    }
+
+    function slide(result) {
+        var UIScrollPicture = api.require('UIScrollPicture');
+        var urlArr = [];
+        for (var i = 0; i < result.length; i++) {
+            if (result[i].app_image) {
+                urlArr.push(result[i].app_image);
+            }
+            imageCache(result[i].app_image);
+        };
+
+        UIScrollPicture.open({
+            rect: {
+                x: 0,
+                y: 0,
+                w: api.winWidth,
+                h: 200
+            },
+            data: {
+                paths: urlArr,
+                captions: ['apicloud', 'apicloud', 'apicloud', 'apicloud']
+            },
+            styles: {
+                caption: {
+                    height: 0,
+                    color: '#fff',
+                    size: 0,
+                    bgColor: '#fff',
+                    position: 'bottom'
+                },
+                indicator: {
+                    align: 'center',
+                    color: '#FFFFFF',
+                    activeColor: '#909090'
+                }
+            },
+            placeholderImg: 'widget://res/slide1.jpg',
+            contentMode: 'scaleToFill',
+            interval: 3,
+            fixedOn: api.frameName,
+            loop: true,
+            fixed: false
+        }, function(ret, err) {
+            if (ret) {
+              if (ret.eventType='click') {
+                api.openWin({
+                    name: 'page1',
+                    url: './page3.html',
+                    pageParam: {
+                        url: result[ret.index].link,
+                        title:'哇塞好又挖了一个旮旯'
+
+                    }
+                });
+
+
+              }
+            } else {
+
+            }
+        });
+    };
+</script>
+
+</html>

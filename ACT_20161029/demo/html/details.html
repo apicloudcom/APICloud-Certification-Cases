@@ -1,0 +1,102 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>Hello APP</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <style>
+        #con {
+            margin: 10px;
+            font-size: 24px;
+        }
+
+        ul {
+            margin-bottom: 10px;
+        }
+
+        ul li {
+            margin: 5px 10px;
+            padding: 5px;
+            color: #000;
+            word-wrap: break-word;
+        }
+
+        header img {
+            height:30px;
+            width: 30px;
+            margin-top: 5px;
+        }
+
+        header {
+            height: 40px;
+            border-bottom: 1px solid #eeeeee;
+        }
+
+        #userImg {
+            height: 70px;
+            width: 70px;
+            border-radius: 50%;
+        }
+
+        .user-img {
+          margin: 24px;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+        }
+        #name{
+          margin: 20px;
+          font-size: 18px;
+          font-family: '黑体';
+        }
+        .info{
+          margin-top: 20px;
+          color: #979797;
+          justify-content: space-around;
+        }
+        #wordage{
+          margin-right: 12px;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <img src="../image/back.png" onclick='back()' alt="">
+    </header>
+    <div tapmode='active' class="flex user-img  flex-col">
+        <div class="flex ">
+            <img id='userImg' src="" alt="">
+        </div>
+        <div id="name"></div>
+        <div id="content"></div>
+        <div class="info flex">
+          <span id="wordage"></span>
+            <span id="likes"></span>
+        </div>
+    </div>
+</body>
+<script type="text/javascript"  src="../script/api.js"></script>
+
+</html>
+<script type="text/javascript">
+    apiready = function() {
+        var imgUrl = api.pageParam.data.author.avatar;
+        var username = api.pageParam.data.author.nickname;
+        var content = api.pageParam.data.author.intro_compiled;
+        var total_likes_received = api.pageParam.data.author.total_likes_received;
+        var total_wordage = api.pageParam.data.author.total_wordage;
+        // console.log('s:'+JSON.stringify(api.pageParam.data.));
+        $api.attr($api.dom('#userImg'), 'src', imgUrl);
+        $api.html($api.dom('#name'), username);
+        $api.html($api.dom('#content'), content);
+        $api.html($api.dom('#likes'), '获得了'+total_likes_received+"个喜欢");
+        $api.html($api.dom('#wordage'), '写了'+total_wordage+'字');
+    };
+    function back(){
+      api.closeWin();
+    }
+</script>
