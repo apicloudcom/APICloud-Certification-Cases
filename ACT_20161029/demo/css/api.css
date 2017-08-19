@@ -75,7 +75,30 @@ td,th {
 	background: url(../image/loading_more.gif) no-repeat center;
 	-webkit-background-size: contain;
 	background-size: contain;
-} 
-.loading_more:after {
-	content: '加载更多';	
 }
+.loading_more:after {
+	content: '加载更多';
+}.flex {
+		display: -webkit-box;
+		display: -webkit-flex;
+		display: flex;
+}
+
+.flex-1 {
+		-webkit-box-flex: 1;
+		-webkit-flex: 1;
+		flex: 1;
+}
+
+.flex-col {
+		-webkit-box-orient: vertical;
+		-webkit-flex-flow: column;
+		flex-direction: : column;
+}
+
+.flex-col-rev {
+		-webkit-box-orient: vertical;
+		-webkit-flex-flow: column-reverse;
+		flex-flow: column-reverse;
+}
+.active{background:#eeeeee}
